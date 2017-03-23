@@ -2,7 +2,11 @@
 
 # tests
 
-file(GLOB_RECURSE src_files src *.c *.cpp)
+set(test_dir ${PROJECT_SOURCE_DIR}/tests)
+
+file(GLOB src_files ${test_dir}/*.c ${test_dir}/*.cpp)
+
+msg("Got test src: ${src_files}")
 
 add_executable(tests ${src_files})
 
