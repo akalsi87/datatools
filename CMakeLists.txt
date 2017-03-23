@@ -97,6 +97,10 @@ install(
   DESTINATION ${cmake_config_dir}
   COMPONENT dev)
 
+install(
+  FILES ${PROJECT_SOURCE_DIR}/LICENSE
+  DESTINATION share/datatools)
+
 # TESTS
 
 add_subdirectory(tests)
