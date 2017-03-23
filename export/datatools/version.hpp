@@ -1,6 +1,9 @@
 /*! version.hpp */
 /* Copyright (c) 2017 Aaditya Kalsi */
 
+#ifndef _DATATOOLS_VERSION_HPP_
+#define _DATATOOLS_VERSION_HPP_
+
 #if defined(_WIN32) && !defined(__GCC__)
 #  ifdef BUILDING_DATATOOLS
 #    define DT_API __declspec(dllexport)
@@ -18,12 +21,22 @@
 namespace dt
 {
 
-using cstring = char const*;
+using CString = char const*;
 
 DT_API
 /*!
- *
+ * Get the version as a C string.
  */
-cstring version();
+CString version();
+
+
+template <class T>
+struct Buffer
+{
+    T* begin;
+    T const* end;
+};
 
 } // namespace dt
+
+#endif//_DATATOOLS_VERSION_HPP_

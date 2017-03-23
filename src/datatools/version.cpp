@@ -9,7 +9,7 @@
 namespace dt
 {
 
-cstring version()
+CString version()
 {
     return stringify(DATATOOLS_VER_STRING);
 }

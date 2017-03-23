@@ -6,12 +6,12 @@
 
 #include <cstring>
 
-void testThatTest()
+void version()
 {
     testThat(strcmp(dt::version(), "0.1.0") == 0);
 }
 
 setupSuite(exports)
 {
-    addTest(testThatTest);
+    addTest(version);
 }
