@@ -29,14 +29,8 @@ DT_API
  */
 CString version();
 
-
-template <class T>
-struct Buffer
-{
-    T* begin;
-    T const* end;
-};
-
 } // namespace dt
+
+#include <cstddef>
 
 #endif//_DATATOOLS_VERSION_HPP_
