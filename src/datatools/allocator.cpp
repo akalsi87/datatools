@@ -11,7 +11,7 @@ namespace dt
 
 Address defMalloc(AllocState*, size_t sz)
 {
-    return new char[sz];
+    return new (std::nothrow) char[sz];
 }
 
 void defFree(AllocState*, void* ptr)
@@ -47,7 +47,7 @@ struct ArenaSegment
         size_t const alignedSize = (sz + (ALIGN-1)) & (~(ALIGN-1));
         sz = alignedSize;
         if (sz + used > size) return nullptr;
-        Address mem = getOffset(used);
+        Address mem = this->getOffset(used);
         used += sz;
         return mem;
     }
@@ -70,6 +70,8 @@ struct Arena
 
     ArenaSegment* createNewSegment(size_t sz, ArenaSegment* next)
     {
+        size_t const alignedSize = (sz + (ALIGN-1)) & (~(ALIGN-1));
+        sz = alignedSize;
         sz += sizeof(ArenaSegment);
         if (sz < defaultSize) {
             sz = defaultSize;

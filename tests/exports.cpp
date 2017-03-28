@@ -2,6 +2,7 @@
 
 #include <datatools/version.hpp>
 #include <datatools/allocator.hpp>
+#include <datatools/array.hpp>
 
 #include "defs.h"
 
@@ -44,10 +45,26 @@ void arenaAllocator()
     testThat(mem2 != (mem1+8));
 }
 
+void array()
+{
+    {/* empty array */
+        dt::Array<int> arr;
+        testThat(arr.size() == 0);
+        arr.reset(10);
+        testThat(arr.size() == 10);
+        for (size_t i = 0; i < 10; ++i) {
+            testThat(arr[i] == 0);
+        }
+        arr.reset();
+        testThat(arr.size() == 0);
+    }
+}
+
 setupSuite(exports)
 {
     addTest(version);
     addTest(funcPtrType);
     addTest(allocatorDefault);
     addTest(arenaAllocator);
+    addTest(array);
 }
