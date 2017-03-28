@@ -23,6 +23,8 @@ class FuncPtr<Return(ArgType...)>
     CFuncType m_func;
   public:
     FuncPtr(CFuncType func) : m_func(func) { }
+    template <class Fn>
+    FuncPtr(Fn f) : m_func(reinterpret_cast<CFuncType>(f)) { }
     FuncPtr(FuncPtr const& rhs) = default;
     FuncPtr& operator=(FuncPtr const& rhs) = default;
 
