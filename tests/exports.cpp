@@ -25,7 +25,7 @@ void funcPtrType()
 
 void version()
 {
-    // also update ChangeLog when this fails
+    // also update ChangeLog.txt when this fails
     testThat(std::strcmp(dt::version(), "0.1.0") == 0);
 }
 
@@ -34,6 +34,16 @@ void allocatorDefault()
     auto const& alloc = dt::defaultAllocator();
     dt::Address mem = alloc.allocate(20);
     testThat(mem);
+    alloc.deallocate(mem);
+}
+
+void allocatorPage()
+{
+    auto const& alloc = dt::pageAllocator();
+    auto mem = (char*)alloc.allocate(2);
+    testThat(mem != 0);
+    // scribble at mem end
+    mem[4095] = 'a';
     alloc.deallocate(mem);
 }
 
@@ -71,6 +81,7 @@ setupSuite(exports)
     addTest(version);
     addTest(funcPtrType);
     addTest(allocatorDefault);
+    addTest(allocatorPage);
     addTest(arenaAllocator);
     addTest(array);
 }

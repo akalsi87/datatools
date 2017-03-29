@@ -102,13 +102,19 @@ class Allocator
 
 DT_API
 /*!
- *
+ * Create the default allocator.
  */
 Allocator const& defaultAllocator();
 
 DT_API
 /*!
- *
+ * Get the page allocator.
+ */
+Allocator const& pageAllocator();
+
+DT_API
+/*!
+ * Create a new arena allocator.
  */
 Allocator createArenaAllocator(size_t defaultSize = 4096, Allocator const& baseAlloc = defaultAllocator());
 
