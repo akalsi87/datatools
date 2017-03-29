@@ -3,6 +3,7 @@
 #include <datatools/version.hpp>
 #include <datatools/allocator.hpp>
 #include <datatools/array.hpp>
+#include <datatools/mapfile.hpp>
 
 #include "defs.h"
 
@@ -76,6 +77,24 @@ void array()
     }
 }
 
+void mapFile()
+{
+    {// create and destroy with open
+        dt::MappedFile f;
+        testThat(f.open(__FILE__));
+        auto data = f.getData();
+        testThat(data != 0);
+        testThat(data[0] == '/');
+        testThat(data[1] == '*');
+        testThat(data[2] == '!');
+    }
+    {// create and close
+        dt::MappedFile f;
+        testThat(f.open(__FILE__));
+        f.close();
+    }
+}
+
 setupSuite(exports)
 {
     addTest(version);
@@ -84,4 +103,5 @@ setupSuite(exports)
     addTest(allocatorPage);
     addTest(arenaAllocator);
     addTest(array);
+    addTest(mapFile);
 }

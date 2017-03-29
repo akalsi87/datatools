@@ -10,6 +10,7 @@
 #include <sys/mman.h>
 #endif
 
+#include <cassert>
 #include <cstdlib>
 #include <new>
 
@@ -41,20 +42,29 @@ Address defMmap(AllocState*, size_t sz)
     Address mem = mmap(0, sz, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
     mem = (mem == ((Address)-1)) ? 0 : mem;
 #endif
-    auto szptr = static_cast<size_t*>(mem);
-    *szptr = sz;
-    return szptr + (PAGE_SIZE/sizeof(size_t));
+    if (mem) {
+        auto szptr = static_cast<size_t*>(mem);
+        *szptr = sz;
+        return szptr + (PAGE_SIZE/sizeof(size_t));
+    } else {
+        return nullptr;
+    }
 }
 
 void defMunmap(AllocState*, void* ptr)
 {
+    if (!ptr) return;
     auto szptr = static_cast<size_t*>(ptr);
     szptr -= (PAGE_SIZE) / sizeof(size_t);
     size_t const sz = *szptr;
 #ifdef _WIN32
-    (void)VirtualFree(szptr, sz, MEM_RELEASE);
+    bool success = VirtualFree(szptr, sz, MEM_RELEASE);
+    (void)success;
+    assert(success && "Virtual free failed");
 #else
-    (void)munmap(szptr, sz);
+    int fail = munmap(szptr, sz);
+    (void)fail;
+    assert(!fail && "munmap failed");
 #endif
 }
 

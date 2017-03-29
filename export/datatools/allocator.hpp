@@ -9,6 +9,10 @@
 #include <utility>
 #include <cassert>
 
+#ifndef NDEBUG
+#include <cstring>
+#endif
+
 namespace dt
 {
 

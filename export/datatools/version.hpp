@@ -35,5 +35,6 @@ CString version();
 } // namespace dt
 
 #include <cstddef>
+#include <cstdint>
 
 #endif//_DATATOOLS_VERSION_HPP_
