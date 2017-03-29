@@ -12,6 +12,22 @@ set(ver_string ${ver_maj}.${ver_min}.${ver_patch})
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
+if (NOT WIN32)
+  set(archive_dest lib)
+  set(library_dest lib)
+  set(runtime_dest bin)
+  set(include_dest include)
+  set(cmake_dest lib/cmake)
+  set(license_dest share/datatools)
+else()
+  set(archive_dest lib)
+  set(library_dest lib)
+  set(runtime_dest .)
+  set(include_dest include)
+  set(cmake_dest lib/cmake/datatools)
+  set(license_dest .)
+endif()
+
 set(PROJECT_VERSION ${ver_string})
 
 # LIBRARY: libdata-tools
@@ -50,7 +66,7 @@ target_include_directories(
   datatools
   PRIVATE include
   PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/export>
-         $<INSTALL_INTERFACE:include>)
+         $<INSTALL_INTERFACE:${include_dest}>)
 
 target_link_libraries(datatools )
 
@@ -79,16 +95,16 @@ export(PACKAGE datatools)
 install(
   TARGETS datatools
   EXPORT datatoolsTargets
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-  INCLUDES DESTINATION include)
+  ARCHIVE DESTINATION ${archive_dest}
+  LIBRARY DESTINATION ${library_dest}
+  RUNTIME DESTINATION ${runtime_dest}
+  INCLUDES DESTINATION ${include_dest})
 
 install(
   DIRECTORY export/
-  DESTINATION include)
+  DESTINATION ${include_dest})
 
-set(cmake_config_dir lib/cmake/datatools)
+set(cmake_config_dir ${cmake_dest})
 
 install(
   FILES ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/datatoolsConfig.cmake
@@ -102,7 +118,7 @@ install(
 
 install(
   FILES ${PROJECT_SOURCE_DIR}/LICENSE
-  DESTINATION share/datatools)
+  DESTINATION ${license_dest})
 
 # TESTS
 

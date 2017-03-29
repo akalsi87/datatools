@@ -16,7 +16,7 @@ static char const* SUITE = 0;
 jmp_buf JMP_BUF;
 char* ERR_BUF = &ERRBUF[0];
 
-void _add_test(char const* name, test_fn_t fn)
+void _addTest(char const* name, test_fn_t fn)
 {
     TESTS[TOTAL].suite = SUITE;
     TESTS[TOTAL].name = name;

@@ -8,10 +8,15 @@
 
 #include <cstring>
 
+namespace
+{
+
 int returnOne()
 {
     return 1;
 }
+
+} // namespace
 
 void funcPtrType()
 {
@@ -20,7 +25,8 @@ void funcPtrType()
 
 void version()
 {
-    testThat(strcmp(dt::version(), "0.1.0") == 0);
+    // also update ChangeLog when this fails
+    testThat(std::strcmp(dt::version(), "0.1.0") == 0);
 }
 
 void allocatorDefault()

@@ -20,7 +20,7 @@ target_include_directories(
 
 target_link_libraries(tests_install datatools)
 
-add_custom_target(
-  tests_run
-  COMMAND tests_install
-  DEPENDS tests_install)
+add_custom_command(
+  TARGET tests_install
+  POST_BUILD
+  COMMAND cd $<TARGET_FILE_DIR:datatools> && $<TARGET_FILE:tests_install>)
