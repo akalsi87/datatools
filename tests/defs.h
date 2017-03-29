@@ -23,10 +23,14 @@ struct test_s
     test_fn_t fn;
 };
 
+#ifdef _WIN32
 EXTERN_C
+#endif
 extern jmp_buf JMP_BUF;
 
+#ifdef _WIN32
 EXTERN_C
+#endif
 extern char* ERR_BUF;
 
 EXTERN_C
