@@ -3,10 +3,20 @@
 
 #include "datatools/allocator.hpp"
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#else
+#include <sys/mman.h>
+#endif
+
 #include <cstdlib>
 #include <new>
 
 namespace dt
+{
+
+namespace
 {
 
 Address defMalloc(AllocState*, size_t sz)
@@ -19,10 +29,47 @@ void defFree(AllocState*, void* ptr)
     delete[] static_cast<char*>(ptr);
 }
 
+static size_t const PAGE_SIZE = 4096;
+
+Address defMmap(AllocState*, size_t sz)
+{
+    sz = (sz + (PAGE_SIZE - 1)) & (~(PAGE_SIZE - 1));
+    sz += PAGE_SIZE;
+#ifdef _WIN32
+    Address mem = VirtualAlloc(0, sz, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+#else
+    Address mem = mmap(0, sz, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+    mem = (mem == ((Address)-1)) ? 0 : mem;
+#endif
+    auto szptr = static_cast<size_t*>(mem);
+    *szptr = sz;
+    return szptr + (PAGE_SIZE/sizeof(size_t));
+}
+
+void defMunmap(AllocState*, void* ptr)
+{
+    auto szptr = static_cast<size_t*>(ptr);
+    szptr -= (PAGE_SIZE) / sizeof(size_t);
+    size_t const sz = *szptr;
+#ifdef _WIN32
+    (void)VirtualFree(szptr, sz, MEM_RELEASE);
+#else
+    (void)munmap(szptr, sz);
+#endif
+}
+
+} // namespace
+
 Allocator const& defaultAllocator()
 {
     static Allocator const Default(0, defMalloc, defFree, 0);
     return Default;
+}
+
+Allocator const& pageAllocator()
+{
+    static Allocator const Page(0, defMmap, defMunmap, 0);
+    return Page;
 }
 
 namespace

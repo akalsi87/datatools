@@ -79,20 +79,42 @@ class Allocator
         return *this;
     }
 
-    Address allocate(size_t size) const { return m_alloc(m_state, size); }
+    Address allocate(size_t size) const
+    {
+        Address mem = m_alloc(m_state, size);
+#ifndef NDEBUG
+        if (mem) {
+            std::memset(mem, 0x42, size);
+        }
+#endif
+        return mem;
+    }
 
-    void deallocate(Address ptr) const { m_free(m_state, ptr); }
+    void deallocate(Address ptr) const
+    {
+#ifndef NDEBUG
+        // all allocations are at least 1 byte
+        std::memset(ptr, 0xfe, 1);
+#endif
+        m_free(m_state, ptr);
+    }
 };
 
 DT_API
 /*!
- *
+ * Create the default allocator.
  */
 Allocator const& defaultAllocator();
 
 DT_API
 /*!
- *
+ * Get the page allocator.
+ */
+Allocator const& pageAllocator();
+
+DT_API
+/*!
+ * Create a new arena allocator.
  */
 Allocator createArenaAllocator(size_t defaultSize = 4096, Allocator const& baseAlloc = defaultAllocator());
 

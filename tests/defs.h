@@ -34,7 +34,7 @@ EXTERN_C
 extern char* ERR_BUF;
 
 EXTERN_C
-void _add_test(char const* name, test_fn_t fn);
+void _addTest(char const* name, test_fn_t fn);
 
 #define testThat(expr)        \
     if (!(expr)) {            \
@@ -43,7 +43,7 @@ void _add_test(char const* name, test_fn_t fn);
     }
 
 #define addTest(name)         \
-    _add_test(#name, name)
+    _addTest(#name, name)
 
 #define defineSuite(name)     \
     EXTERN_C void name##SuiteSetup()
