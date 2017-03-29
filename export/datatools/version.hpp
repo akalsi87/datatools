@@ -10,6 +10,9 @@
 #  else
 #    define DT_API __declspec(dllimport)
 #  endif
+#  ifndef _CRT_SECURE_NO_WARNINGS
+#    define _CRT_SECURE_NO_WARNINGS
+#  endif
 #else
 #  ifdef BUILDING_DATATOOLS
 #    define DT_API __attribute__ ((visibility ("default")))

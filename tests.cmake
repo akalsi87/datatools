@@ -16,8 +16,7 @@ target_include_directories(
 
 target_link_libraries(tests datatools)
 
-add_custom_target(
-  check
-  COMMAND tests
-  DEPENDS tests)
-  
+add_custom_command(
+  TARGET tests
+  POST_BUILD
+  COMMAND $<TARGET_FILE:tests>)

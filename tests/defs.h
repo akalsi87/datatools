@@ -23,7 +23,10 @@ struct test_s
     test_fn_t fn;
 };
 
+EXTERN_C
 extern jmp_buf JMP_BUF;
+
+EXTERN_C
 extern char* ERR_BUF;
 
 EXTERN_C

@@ -106,4 +106,4 @@ install(
 
 # TESTS
 
-add_subdirectory(tests)
+include(tests.cmake)
