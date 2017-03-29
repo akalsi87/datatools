@@ -9,6 +9,9 @@ set(ver_min 1)
 set(ver_patch 0)
 set(ver_string ${ver_maj}.${ver_min}.${ver_patch})
 
+set(CMAKE_C_VISIBILITY_PRESET hidden)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+
 set(PROJECT_VERSION ${ver_string})
 
 # LIBRARY: libdata-tools
